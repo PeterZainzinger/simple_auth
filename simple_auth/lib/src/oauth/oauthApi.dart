@@ -4,7 +4,7 @@ import "package:simple_auth/simple_auth.dart";
 import "package:http/http.dart" as http;
 import "dart:convert" as convert;
 
-typedef void ShowAuthenticator(WebAuthenticator authenticator);
+typedef void ShowAuthenticator(WebAuthenticator authenticator,{ bool forceLogout });
 
 class OAuthApi extends AuthenticatedApi {
   static ShowAuthenticator sharedShowAuthenticator;
@@ -54,7 +54,7 @@ class OAuthApi extends AuthenticatedApi {
   OAuthAccount get currentOauthAccount => currentAccount as OAuthAccount;
 
   @override
-  Future<Account> performAuthenticate() async {
+  Future<Account> performAuthenticate({bool forceLogout = false}) async {
     if (scopesRequired && (scopes?.length ?? 0) == 0) {
       throw Exception("Scopes are required");
     }
@@ -82,9 +82,9 @@ class OAuthApi extends AuthenticatedApi {
     var _authenticator = getAuthenticator();
     await _authenticator.resetAuthenticator();
     if (showAuthenticator != null)
-      showAuthenticator(_authenticator);
+      showAuthenticator(_authenticator, forceLogout: forceLogout);
     else if (sharedShowAuthenticator != null)
-      sharedShowAuthenticator(_authenticator);
+      sharedShowAuthenticator(_authenticator, forceLogout: forceLogout);
     else
       throw new Exception(
           "You are required to implement the 'showAuthenticator or sharedShowAuthenticator");
@@ -155,7 +155,7 @@ class OAuthApi extends AuthenticatedApi {
           account.token = "";
           account.refreshToken = "";
           saveAccountToCache(account);
-          return await performAuthenticate() != null;
+          return await performAuthenticate(forceLogout: false) != null;
         } else
           throw new Exception("${result.error} : ${result.errorDescription}");
       }

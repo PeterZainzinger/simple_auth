@@ -30,7 +30,7 @@ class BasicAuthApi extends AuthenticatedApi {
   BasicAuthAuthenticator getAuthenticator() => currentAuthenticator;
 
   @override
-  Future<Account> performAuthenticate() async {
+  Future<Account> performAuthenticate({bool forceLogout = false}) async {
     BasicAuthAccount account =
         currentBasicAccount ?? await loadAccountFromCache<BasicAuthAccount>();
     if (account?.isValid() ?? false) {

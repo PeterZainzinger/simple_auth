@@ -18,6 +18,7 @@ public class WebAuthenticator {
         redirectUrl = new URI(call.argument("redirectUrl").toString());
         title = call.argument("title");
         allowsCancel = Boolean.parseBoolean((String)call.argument("allowsCancel"));
+        forceLogout = Boolean.parseBoolean((String)call.argument("forceLogout"));
         isCompleted = Boolean.parseBoolean((String)call.argument("isCompleted"));
         useEmbeddedBrowser = Boolean.parseBoolean((String)call.argument("useEmbeddedBrowser"));
 
@@ -30,6 +31,7 @@ public class WebAuthenticator {
     public boolean allowsCancel;
     public boolean isCompleted;
     public boolean useEmbeddedBrowser;
+    public boolean forceLogout;
     public EventChannel.EventSink eventSink;
     public void checkUrl(final String url, final boolean forceComplete)
     {

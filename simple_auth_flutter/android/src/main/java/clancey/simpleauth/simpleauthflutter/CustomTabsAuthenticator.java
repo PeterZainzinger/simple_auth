@@ -3,6 +3,8 @@ package clancey.simpleauth.simpleauthflutter;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.provider.Browser;
 import android.net.Uri;
 import androidx.browser.customtabs.CustomTabsIntent;
 
@@ -44,6 +46,13 @@ public class CustomTabsAuthenticator {
         Intent keepAliveIntent = new Intent().setClassName(
                 context.getPackageName(), KeepAliveService.class.getCanonicalName());
         intent.intent.putExtra("android.support.customtabs.extra.KEEP_ALIVE", keepAliveIntent);
+
+        if(authenticator.forceLogout){
+            Bundle headers = new Bundle();
+            headers.putString("logout", "true");
+            intent.intent.putExtra(Browser.EXTRA_HEADERS, headers);
+        }
+
         CustomTabActivityHelper.openCustomTab(context, intent, uri,
                 new CustomTabActivityHelper.CustomTabFallback() {
                     @Override

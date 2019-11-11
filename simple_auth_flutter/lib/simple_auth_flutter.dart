@@ -21,7 +21,7 @@ class SimpleAuthFlutter implements simpleAuth.AuthStorage {
 //The map of all the currently in use authenticators
   static Map<String, simpleAuth.WebAuthenticator> authenticators = {};
   static Future showAuthenticator(
-      simpleAuth.WebAuthenticator authenticator) async {
+      simpleAuth.WebAuthenticator authenticator,{bool forceLogout}) async {
     if (authenticator.redirectUrl == null) {
       authenticator.onError("redirectUrl cannot be null");
       return;
@@ -35,6 +35,7 @@ class SimpleAuthFlutter implements simpleAuth.AuthStorage {
       "identifier": authenticator.identifier,
       "title": authenticator.title,
       "allowsCancel": authenticator.allowsCancel.toString(),
+      "forceLogout": (forceLogout ?? false).toString(),
       "redirectUrl": authenticator.redirectUrl,
       "useEmbeddedBrowser": authenticator.useEmbeddedBrowser.toString()
     });

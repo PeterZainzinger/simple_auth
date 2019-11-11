@@ -16,8 +16,8 @@ abstract class AuthenticatedApi extends Api {
   Future<Account> _currentAuthCall;
 
   ///Call this method to get the Authenticated user.
-  Future<Account> authenticate() async {
-    if (_currentAuthCall == null) _currentAuthCall = performAuthenticate();
+  Future<Account> authenticate({bool forceLogout = false}) async {
+    if (_currentAuthCall == null) _currentAuthCall = performAuthenticate(forceLogout: forceLogout);
     try {
       var account = await _currentAuthCall;
       _currentAuthCall = null;
@@ -29,7 +29,7 @@ abstract class AuthenticatedApi extends Api {
   }
 
   ///This method is for subclasses only. Call [authenticate()] instead.
-  Future<Account> performAuthenticate();
+  Future<Account> performAuthenticate({bool forceLogout = false});
   Future refreshAccount(Account account);
 
   @override
